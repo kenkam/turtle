@@ -1,0 +1,281 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Turtle Graphics Testing Strategy &mdash; Turtle Graphics Testing Strategy v1.0 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Turtle Graphics Testing Strategy v1.0 documentation" href="index.html" />
+    <link rel="next" title="Turtle Graphics Extension" href="extend.html" />
+    <link rel="prev" title="Turtle Graphics Assignment" href="README.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="extend.html" title="Turtle Graphics Extension"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="README.html" title="Turtle Graphics Assignment"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Turtle Graphics Testing Strategy v1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="turtle-graphics-testing-strategy">
+<h1>Turtle Graphics Testing Strategy<a class="headerlink" href="#turtle-graphics-testing-strategy" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="running-the-automated-unittests">
+<h2>Running the automated unittests<a class="headerlink" href="#running-the-automated-unittests" title="Permalink to this headline">¶</a></h2>
+<p>This is as simple as:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>make all
+<span class="nv">$ </span>./run_tests.sh
+<span class="c"># ./run_tests.sh -v for verbose mode</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>A mixture of white and black box testing have been used. Unittests have been written for parsing and interpreting functions, which account for 100% of the code of the parser and interpreter. In addition, the <tt class="docutils literal"><span class="pre">parse</span></tt> and <tt class="docutils literal"><span class="pre">interp</span></tt> executables are tested manually following a test plan outlined below in <a class="reference internal" href="#manual-testing">Manual Testing</a>.</p>
+<p>The tests have not been appended here as they are</p>
+</div>
+<div class="section" id="unittests">
+<h2>Unittests<a class="headerlink" href="#unittests" title="Permalink to this headline">¶</a></h2>
+<p>The unittests use the <a class="reference external" href="http://www.jera.com/techinfo/jtns/jtn002.html">MinUnit testing suite</a> which provides 2 macros: running tests and assertions. The unittests take advantage of this and test every possible path through the functions of the code by supplying different input values and asserting output values is equal to the expected values. The author believes the automated unittests have 95 to 99% code coverage. The remaining percent that cannot be automatically tested would be <tt class="docutils literal"><span class="pre">printf()</span></tt> and <tt class="docutils literal"><span class="pre">fprintf()</span></tt> statements, which appear during the unittests if the <tt class="docutils literal"><span class="pre">-v</span></tt> flag is supplied to <tt class="docutils literal"><span class="pre">run_tests.sh</span></tt> or if the tests executables are ran individually. These print statements were checked manually to ensure they were called when they are supposed to.</p>
+<p>There are 4 test executables. <tt class="docutils literal"><span class="pre">test_parser.c</span></tt> and <tt class="docutils literal"><span class="pre">test_interpreter.c</span></tt> are the main unittest programs that do most of the testing. The unittests for the parser is straight forward and tests correct and incorrect values, while the tests for interpreter also tests the output written to the file to ensure the correct postscript commands are written.</p>
+<p><tt class="docutils literal"><span class="pre">test_FOO_malloc.c</span></tt> are used for simulating and testing when <tt class="docutils literal"><span class="pre">malloc()</span></tt> fails. This works because there is an <tt class="docutils literal"><span class="pre">intercept.h</span></tt> file that is essentially a macro that replaces <tt class="docutils literal"><span class="pre">malloc()</span></tt> with <tt class="docutils literal"><span class="pre">my_malloc()</span></tt>, which lives in <tt class="docutils literal"><span class="pre">overrides.c</span></tt>. This is switched on at compile time using the <tt class="docutils literal"><span class="pre">-D</span></tt> flag in <tt class="docutils literal"><span class="pre">gcc</span></tt>. Since <tt class="docutils literal"><span class="pre">my_malloc()</span></tt> is a custom function, it can be made to fail whenever the tests require it, hence the ability to test various lines of code where <tt class="docutils literal"><span class="pre">malloc()</span></tt> appears.</p>
+<p>As well as testing for <tt class="docutils literal"><span class="pre">malloc</span></tt>, the unittests contain tests for``parse_main()`` and <tt class="docutils literal"><span class="pre">interp_main()</span></tt> and runs various fixture files that live in the <tt class="docutils literal"><span class="pre">data</span></tt> folder. <tt class="docutils literal"><span class="pre">testdata1.txt</span></tt> tests the normal set of grammar as well as nested loops and reverse loops. <tt class="docutils literal"><span class="pre">testdata2.txt</span></tt> and <tt class="docutils literal"><span class="pre">testdata3.txt</span></tt> are copied from the assignment sheet. The generated postscript file has the same shape and appearance as the one on the assignment sheet as well. However, the unittests use these as regression tests, to make sure any addition of code has not broken anything.</p>
+<p>Other files that live in the folder are expected output files and bad input files. The bad input files are by no means exhaustive, as these have already been carefully tested in the unittests themselves. However, they serve as a kind of black box test to ensure that everything works from the top-down.</p>
+</div>
+<div class="section" id="manual-testing">
+<h2>Manual Testing<a class="headerlink" href="#manual-testing" title="Permalink to this headline">¶</a></h2>
+<p>As well as the unittests, a few steps of manual black box testing were followed to ensure the executables behaved as expected. Although unittests provide great flexibility in terms of regression testing and ensuring the units work, it does not validate the executable. These tests do not test the entire <tt class="docutils literal"><span class="pre">data/</span></tt> folder because it has already been done in unittests.</p>
+<div class="section" id="testing-parse">
+<h3>Testing <tt class="docutils literal"><span class="pre">parse</span></tt><a class="headerlink" href="#testing-parse" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>Tests</dt>
+<dd><ol class="first last loweralpha simple">
+<li><tt class="docutils literal"><span class="pre">./parse</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">./parse</span> <span class="pre">invalid-filename.txt</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">./parse</span> <span class="pre">data/testdata1.txt</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">./parse</span> <span class="pre">data/testb_inst.txt</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">./parse</span> <span class="pre">data/testb_polish.txt</span></tt> <a class="footnote-reference" href="#f1" id="id1">[1]</a></li>
+</ol>
+</dd>
+<dt>Expected results</dt>
+<dd><ol class="first last loweralpha simple">
+<li><tt class="docutils literal"><span class="pre">&quot;Error:</span> <span class="pre">Requires</span> <span class="pre">one</span> <span class="pre">argument</span> <span class="pre">only&quot;</span></tt> followed by usage</li>
+<li><tt class="docutils literal"><span class="pre">&quot;Error:</span> <span class="pre">failed</span> <span class="pre">to</span> <span class="pre">open</span> <span class="pre">invalid-filename.txt&quot;</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">&quot;Successfully</span> <span class="pre">parsed</span> <span class="pre">data/testdata1.txt&quot;</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">&quot;Error:</span> <span class="pre">expected</span> <span class="pre">&lt;INSTRUCTION&gt;</span> <span class="pre">but</span> <span class="pre">got</span> <span class="pre">'A</span> <span class="pre">30'</span> <span class="pre">on</span> <span class="pre">line</span> <span class="pre">2&quot;</span></tt> followed by <tt class="docutils literal"><span class="pre">&quot;Error:</span> <span class="pre">failed</span> <span class="pre">to</span> <span class="pre">parse</span> <span class="pre">data/testb_inst.txt&quot;</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">&quot;Successfully</span> <span class="pre">parsed</span> <span class="pre">data/testb_polish.txt&quot;</span></tt></li>
+</ol>
+</dd>
+</dl>
+<table class="docutils footnote" frame="void" id="f1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>The grammar is correct for a polish that is a division by zero.</td></tr>
+</tbody>
+</table>
+<div class="section" id="results-git-revision-92cf9b7-1-0">
+<h4>Results (git revision 92cf9b7 / 1.0)<a class="headerlink" href="#results-git-revision-92cf9b7-1-0" title="Permalink to this headline">¶</a></h4>
+<p>All tests pass.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="45%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Test</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>a</td>
+<td>Pass</td>
+</tr>
+<tr><td>b</td>
+<td>Pass</td>
+</tr>
+<tr><td>c</td>
+<td>Pass</td>
+</tr>
+<tr><td>d</td>
+<td>Pass</td>
+</tr>
+<tr><td>e</td>
+<td>Pass</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="testing-interp">
+<h3>Testing <tt class="docutils literal"><span class="pre">interp</span></tt><a class="headerlink" href="#testing-interp" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>Tests</dt>
+<dd><ol class="first last loweralpha simple">
+<li><tt class="docutils literal"><span class="pre">./interp</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">./interp</span> <span class="pre">invalid-filename.txt</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">./interp</span> <span class="pre">invalid-filename.txt</span> <span class="pre">out1.txt</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">./interp</span> <span class="pre">data/testdata1.txt</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">./interp</span> <span class="pre">data/testdata1.txt</span> <span class="pre">out1.txt</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">./interp</span> <span class="pre">data/testb_inst.txt</span> <span class="pre">out1.txt</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">./parse</span> <span class="pre">data/testb_polish.txt</span> <span class="pre">out1.txt</span></tt></li>
+</ol>
+</dd>
+<dt>Expected results</dt>
+<dd><ol class="first last loweralpha simple">
+<li><tt class="docutils literal"><span class="pre">&quot;Error:</span> <span class="pre">Requires</span> <span class="pre">two</span> <span class="pre">arguments&quot;</span></tt> followed by usage</li>
+<li><tt class="docutils literal"><span class="pre">&quot;Error:</span> <span class="pre">Requires</span> <span class="pre">two</span> <span class="pre">arguments&quot;</span></tt> followed by usage</li>
+<li><tt class="docutils literal"><span class="pre">&quot;Error:</span> <span class="pre">failed</span> <span class="pre">to</span> <span class="pre">open</span> <span class="pre">invalid-filename.txt&quot;</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">&quot;Error:</span> <span class="pre">Requires</span> <span class="pre">two</span> <span class="pre">arguments&quot;</span></tt> followed by usage</li>
+<li><tt class="docutils literal"><span class="pre">&quot;Successfully</span> <span class="pre">parsed</span> <span class="pre">and</span> <span class="pre">interpreted</span> <span class="pre">data/testdata1.txt&quot;</span></tt> followed by <tt class="docutils literal"><span class="pre">&quot;Output:</span> <span class="pre">out1.txt&quot;</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">&quot;Error:</span> <span class="pre">expected</span> <span class="pre">&lt;INSTRUCTION&gt;</span> <span class="pre">but</span> <span class="pre">got</span> <span class="pre">'A</span> <span class="pre">30'</span> <span class="pre">on</span> <span class="pre">line</span> <span class="pre">2&quot;</span></tt> followed by <tt class="docutils literal"><span class="pre">&quot;Error:</span> <span class="pre">failed</span> <span class="pre">to</span> <span class="pre">parse</span> <span class="pre">and</span> <span class="pre">interpret</span> <span class="pre">data/testb_inst.txt&quot;</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">&quot;Error:</span> <span class="pre">division</span> <span class="pre">by</span> <span class="pre">zero</span> <span class="pre">in</span> <span class="pre">polish</span> <span class="pre">expression</span> <span class="pre">'SET</span> <span class="pre">A</span> <span class="pre">:=</span> <span class="pre">4</span> <span class="pre">5</span> <span class="pre">5</span> <span class="pre">-</span> <span class="pre">/</span> <span class="pre">;'</span> <span class="pre">on</span> <span class="pre">line</span> <span class="pre">2&quot;</span></tt> followed by <tt class="docutils literal"><span class="pre">&quot;Error:</span> <span class="pre">failed</span> <span class="pre">to</span> <span class="pre">parse</span> <span class="pre">and</span> <span class="pre">interpret</span> <span class="pre">data/testb_polish.txt&quot;</span></tt></li>
+</ol>
+</dd>
+</dl>
+<div class="section" id="results-git-revision-531fde2-1-0">
+<h4>Results (git revision 531fde2 / 1.0)<a class="headerlink" href="#results-git-revision-531fde2-1-0" title="Permalink to this headline">¶</a></h4>
+<p>All tests pass.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="45%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Test</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>a</td>
+<td>Pass</td>
+</tr>
+<tr><td>b</td>
+<td>Pass</td>
+</tr>
+<tr><td>c</td>
+<td>Pass</td>
+</tr>
+<tr><td>d</td>
+<td>Pass</td>
+</tr>
+<tr><td>e</td>
+<td>Pass</td>
+</tr>
+<tr><td>f</td>
+<td>Pass</td>
+</tr>
+<tr><td>g</td>
+<td>Pass</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Turtle Graphics Testing Strategy</a><ul>
+<li><a class="reference internal" href="#running-the-automated-unittests">Running the automated unittests</a></li>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#unittests">Unittests</a></li>
+<li><a class="reference internal" href="#manual-testing">Manual Testing</a><ul>
+<li><a class="reference internal" href="#testing-parse">Testing <tt class="docutils literal"><span class="pre">parse</span></tt></a><ul>
+<li><a class="reference internal" href="#results-git-revision-92cf9b7-1-0">Results (git revision 92cf9b7 / 1.0)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#testing-interp">Testing <tt class="docutils literal"><span class="pre">interp</span></tt></a><ul>
+<li><a class="reference internal" href="#results-git-revision-531fde2-1-0">Results (git revision 531fde2 / 1.0)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="README.html"
+                        title="previous chapter">Turtle Graphics Assignment</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="extend.html"
+                        title="next chapter">Turtle Graphics Extension</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/test.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="extend.html" title="Turtle Graphics Extension"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="README.html" title="Turtle Graphics Assignment"
+             >previous</a> |</li>
+        <li><a href="index.html">Turtle Graphics Testing Strategy v1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Kenneth Kam.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

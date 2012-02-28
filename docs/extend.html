@@ -1,0 +1,104 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Turtle Graphics Extension &mdash; Turtle Graphics Testing Strategy v1.0 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Turtle Graphics Testing Strategy v1.0 documentation" href="index.html" />
+    <link rel="prev" title="Turtle Graphics Testing Strategy" href="test.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="test.html" title="Turtle Graphics Testing Strategy"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Turtle Graphics Testing Strategy v1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="turtle-graphics-extension">
+<h1>Turtle Graphics Extension<a class="headerlink" href="#turtle-graphics-extension" title="Permalink to this headline">¶</a></h1>
+<p>The extension is a simple GUI program written in GTK+. To make the extension:</p>
+<p>This GUI uses several programming techniques. One of them is callbacks and event-based programming as required by GTK+. Callbacks were &#8216;connected&#8217; to events (signals in GTK&#8217;s vocabulary) that would fire based on several factors, user interaction being one of them.</p>
+<p>The GUI has several features that you would find in any desktop app: a menubar, a status bar, keyboard shortcuts, and the main part of the app. An additional feature is the undo feature, which is quite simple in implementation: a LIFO stack holds information on each draw; undo merely pops the last draw and redraws the entire stack again. This LIFO stack thus allows for an input history, items which when clicked will populate the text view with its logo commands.</p>
+<p>Scaling and panning of the drawing is also supported. Simply drag on the drawing area with your mouse.</p>
+<p>To pass information between callback functions, a struct was used to hold data on the app&#8217;s state. This is a cleaner way (and the only way in GTK+) of passing parameters.</p>
+<p>The GUI code uses most of the interpreting code in <tt class="docutils literal"><span class="pre">interpreter.c</span></tt>, providing 3 additional interpreter functions to hook into the code. Please read the README file for more information.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="test.html"
+                        title="previous chapter">Turtle Graphics Testing Strategy</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/extend.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="test.html" title="Turtle Graphics Testing Strategy"
+             >previous</a> |</li>
+        <li><a href="index.html">Turtle Graphics Testing Strategy v1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Kenneth Kam.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>
