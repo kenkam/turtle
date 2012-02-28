@@ -9,8 +9,8 @@ Compiling
 
 This has been tested on Ubuntu 10.10 with gtk-2-0. Simply do
 
-  make extension
-  ./extension
+    make extension
+    ./extension
   
 will fire up the GUI.
 
@@ -19,19 +19,19 @@ Logo Language
 
 The BNF of the language is:
 
-  <MAIN>        ::= "{" <INSTRCTLST>
-  <INSTRCTLST>  ::= <INSTRUCTION><INSTRCTLST> | "}"
-  <INSTRUCTION> ::= <FD> | <LT> | <RT> | <DO> | <SET>
-  <FD>          ::= "FD" <VARNUM>
-  <LT>          ::= "LT" <VARNUM>
-  <RT>          ::= "RT" <VARNUM>
-  <DO>          ::= "DO" <VAR> "FROM" <VARNUM> "TO"
-                    <VARNUM> "{" <INSTRCTLST>
-  <VAR>         ::= [A-Z]
-  <VARNUM>      ::= number | <VAR>
-  <SET>         ::= "SET" <VAR> ":=" <POLISH>
-  <POLISH>      ::= <OP> <POLISH> | <VARNUM> <POLISH> | ";"
-  <OP>          ::= "+" | "-" | "*" | "/"
+    <MAIN>        ::= "{" <INSTRCTLST>
+    <INSTRCTLST>  ::= <INSTRUCTION><INSTRCTLST> | "}"
+    <INSTRUCTION> ::= <FD> | <LT> | <RT> | <DO> | <SET>
+    <FD>          ::= "FD" <VARNUM>
+    <LT>          ::= "LT" <VARNUM>
+    <RT>          ::= "RT" <VARNUM>
+    <DO>          ::= "DO" <VAR> "FROM" <VARNUM> "TO"
+                      <VARNUM> "{" <INSTRCTLST>
+    <VAR>         ::= [A-Z]
+    <VARNUM>      ::= number | <VAR>
+    <SET>         ::= "SET" <VAR> ":=" <POLISH>
+    <POLISH>      ::= <OP> <POLISH> | <VARNUM> <POLISH> | ";"
+    <OP>          ::= "+" | "-" | "*" | "/"
 
 About
 =====
