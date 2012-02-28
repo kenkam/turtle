@@ -7,7 +7,7 @@ This C project contains a parser, an interpreter, and a GTK+ GUI that would inte
 Compiling
 =========
 
-This has been tested on Ubuntu 10.10 with gtk-2-0. Simply do
+This has been tested on Ubuntu 10.10 with gtk-2.0. Make sure gtk-2.0 is installed correctly, and then simply do
 
     make extension
     ./extension
