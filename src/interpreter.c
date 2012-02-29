@@ -200,7 +200,7 @@ int instruction(Logo input) {
     char inst[INSTRUCT_LENGTH+1]; /* +1 for null character */
     int ret; /* return value */
     /* the string can be FD, LT, RT, SET, or DO */
-    if (sscanf(input->lines[input->counter], "%s", inst) != 1) {
+    if (sscanf(input->lines[input->counter], "%3s", inst) != 1) {
         /* empty string, bail */
         fprintf(stderr, "Error: expected <INSTRUCTION> but got '%s' on line %d\n", DEBUG_DATA);
         return PARSE_ERR;
