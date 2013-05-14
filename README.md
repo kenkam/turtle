@@ -1,11 +1,8 @@
-===========================
-turtle - A Logo Parser in C
-===========================
+# turtle - A Logo Parser in C
 
 This C project contains a parser, an interpreter, and a GTK+ GUI that would interpret the LOGO language on the fly. 
 
-Compiling
-=========
+## Compiling
 
 This has been tested on Ubuntu 10.10 with gtk-2.0. Make sure gtk-2.0 is installed correctly, and then simply do
 
@@ -14,8 +11,7 @@ This has been tested on Ubuntu 10.10 with gtk-2.0. Make sure gtk-2.0 is installe
   
 will fire up the GUI.
 
-Logo Language
-=============
+## Logo Language
 
 The BNF of the language is:
 
@@ -33,7 +29,6 @@ The BNF of the language is:
     <POLISH>      ::= <OP> <POLISH> | <VARNUM> <POLISH> | ";"
     <OP>          ::= "+" | "-" | "*" | "/"
 
-About
-=====
+## About
 
 This project was written for an assignment for the University of Bristol. It includes substantial testing using [MinUnit](http://www.jera.com/techinfo/jtns/jtn002.html). There are the [project submission documentation](http://kenkam.github.com/turtle) that discusses the technicalities of the implementation.
